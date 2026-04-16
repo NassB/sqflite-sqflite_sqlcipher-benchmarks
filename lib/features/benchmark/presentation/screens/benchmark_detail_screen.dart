@@ -398,6 +398,28 @@ class _ScenarioInterpretationCard extends StatelessWidget {
               'In production apps, open the database once at startup and keep the '
               'connection alive for the app lifecycle. Never open/close per request.',
         );
+
+      case BenchmarkScenarioType.full:
+        return const _ScenarioExplanation(
+          headline: 'End-to-end total cost across all scenarios on the same database.',
+          detail:
+              'The Full benchmark runs every individual scenario (open/close, bulk insert, '
+              'read, update, delete, mixed, and repeated open/close) sequentially on a '
+              'single database file without resetting between them. The elapsed time shown '
+              'here is the cumulative wall-clock time for the entire sequence.\n\n'
+              'Because sqflite_sqlcipher pays an encryption or decryption cost on every '
+              'page it reads or writes, the total overhead compounds across all the '
+              'write-heavy sub-scenarios (bulk insert, update, delete, mixed). '
+              'The open/close sub-steps also add PBKDF2 key-derivation overhead that '
+              'sqflite never incurs.\n\n'
+              'In practice, sqflite_sqlcipher typically completes this full sequence '
+              '20–50 % slower than sqflite, depending on hardware AES acceleration and '
+              'storage speed.',
+          tip:
+              'Use this scenario to get a single representative number for the total '
+              'cost of encrypting your database. Compare individual sub-scenarios '
+              'separately for more granular analysis.',
+        );
     }
   }
 }

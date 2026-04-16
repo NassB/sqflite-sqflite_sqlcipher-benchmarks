@@ -36,10 +36,39 @@ class _RunBenchmarkScreenState extends ConsumerState<RunBenchmarkScreen> {
     super.dispose();
   }
 
+  /// Shows a confirmation dialog before running the Full benchmark.
+  /// Returns [true] if the user confirmed, [false] otherwise.
+  Future<bool> _confirmFullBenchmark() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Full Benchmark'),
+        content: const Text(
+          'This will run all scenarios sequentially on the same database without '
+          'resetting between them.\n\n'
+          'Depending on your device, this may take several minutes to complete.\n\n'
+          'Are you sure you want to proceed?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Run'),
+          ),
+        ],
+      ),
+    );
+    return confirmed == true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(benchmarkControllerProvider);
     final controller = ref.read(benchmarkControllerProvider.notifier);
+    final isFull = state.config.scenario == BenchmarkScenarioType.full;
 
     return AppNavigationScaffold(
       title: 'Run benchmark',
@@ -56,9 +85,16 @@ class _RunBenchmarkScreenState extends ConsumerState<RunBenchmarkScreen> {
                 .toList(),
             onChanged: (value) {
               if (value == null) return;
-              controller.updateConfig(
-                state.config.copyWith(scenario: value),
-              );
+              var newConfig = state.config.copyWith(scenario: value);
+              if (value == BenchmarkScenarioType.full) {
+                newConfig = newConfig.copyWith(
+                  iterations: BenchmarkScenarioTypeX.fullIterations,
+                  recordCount: BenchmarkScenarioTypeX.fullRecordCount,
+                );
+                _iterations.text = '${BenchmarkScenarioTypeX.fullIterations}';
+                _records.text = '${BenchmarkScenarioTypeX.fullRecordCount}';
+              }
+              controller.updateConfig(newConfig);
             },
           ),
           const SizedBox(height: 12),
@@ -66,14 +102,22 @@ class _RunBenchmarkScreenState extends ConsumerState<RunBenchmarkScreen> {
             key: const ValueKey('iterationsField'),
             controller: _iterations,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Iterations'),
+            readOnly: isFull,
+            decoration: InputDecoration(
+              labelText: 'Iterations',
+              helperText: isFull ? 'Fixed for Full benchmark' : null,
+            ),
           ),
           const SizedBox(height: 12),
           TextFormField(
             key: const ValueKey('recordCountField'),
             controller: _records,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Record count'),
+            readOnly: isFull,
+            decoration: InputDecoration(
+              labelText: 'Record count',
+              helperText: isFull ? 'Fixed for Full benchmark' : null,
+            ),
           ),
           const SizedBox(height: 12),
           TextFormField(
@@ -119,8 +163,18 @@ class _RunBenchmarkScreenState extends ConsumerState<RunBenchmarkScreen> {
             onPressed: state.isRunning
                 ? null
                 : () async {
-                    final iterations = int.tryParse(_iterations.text) ?? state.config.iterations;
-                    final records = int.tryParse(_records.text) ?? state.config.recordCount;
+                    final iterations = isFull
+                        ? BenchmarkScenarioTypeX.fullIterations
+                        : int.tryParse(_iterations.text) ?? state.config.iterations;
+                    final records = isFull
+                        ? BenchmarkScenarioTypeX.fullRecordCount
+                        : int.tryParse(_records.text) ?? state.config.recordCount;
+
+                    if (isFull) {
+                      final confirmed = await _confirmFullBenchmark();
+                      if (!confirmed) return;
+                    }
+
                     controller.updateConfig(
                       state.config.copyWith(
                         iterations: iterations,

@@ -124,7 +124,8 @@ class BenchmarkRunner {
     );
 
     if (config.scenario != BenchmarkScenarioType.openDatabase &&
-        config.scenario != BenchmarkScenarioType.repeatedOpenClose) {
+        config.scenario != BenchmarkScenarioType.repeatedOpenClose &&
+        config.scenario != BenchmarkScenarioType.full) {
       await adapter.createSchema();
     }
 
@@ -196,6 +197,64 @@ class BenchmarkRunner {
           );
         }
         break;
+      case BenchmarkScenarioType.full:
+        // ── 1. Repeated open/close (cold-open cost) ──────────────────────
+        for (var i = 0; i < config.openRepeatCount; i++) {
+          await adapter.close();
+          await adapter.open(
+            dbPath: dbPath,
+            password: config.sqlcipherPassword,
+            pragmas: config.pragmas,
+          );
+        }
+        // Ensure schema exists after reopens
+        await adapter.createSchema();
+
+        // ── 2. Bulk insert ────────────────────────────────────────────────
+        await adapter.insertManyBatch(rows);
+
+        // ── 3. Read (uses data from bulk insert) ──────────────────────────
+        await adapter.readById(1);
+        await adapter.readPagedList(limit: config.limit, offset: config.offset);
+        await adapter.rawQuery(
+          'SELECT * FROM bench_items WHERE category = ? LIMIT ?',
+          ['cat_1', config.limit],
+        );
+        await adapter.rawQuery('SELECT * FROM bench_items ORDER BY created_at DESC LIMIT ?', [config.limit]);
+        await adapter.readCount();
+
+        // ── 4. Update (uses data from bulk insert) ────────────────────────
+        await adapter.updateMany(maxId: config.recordCount, status: 3);
+
+        // ── 5. Delete (clears the table) ──────────────────────────────────
+        await adapter.deleteByIds(List.generate(config.limit, (i) => i + 1));
+        await adapter.deleteByRange(fromInclusive: config.limit + 1, toInclusive: config.recordCount);
+        await adapter.purgeAll();
+
+        // ── 6. Mixed (re-inserts fresh data, then mixed ops) ──────────────
+        final freshRows = generator.generateRows(config.recordCount);
+        await adapter.insertManyBatch(freshRows);
+        for (var i = 0; i < config.mixedOperations; i++) {
+          final op = i % 10;
+          if (op < 7) {
+            await adapter.readById((i % config.recordCount) + 1);
+          } else if (op < 9) {
+            await adapter.insertOne(generator.generateRows(1).first);
+          } else {
+            await adapter.updateMany(maxId: (i % config.recordCount) + 1, status: i % 5);
+          }
+        }
+
+        // ── 7. Repeated open/close (warm-close cost, with data) ───────────
+        for (var i = 0; i < config.openRepeatCount; i++) {
+          await adapter.close();
+          await adapter.open(
+            dbPath: dbPath,
+            password: config.sqlcipherPassword,
+            pragmas: config.pragmas,
+          );
+        }
+        break;
     }
 
     watch.stop();
@@ -216,6 +275,11 @@ class BenchmarkRunner {
         return config.recordCount * config.iterations;
       case BenchmarkScenarioType.mixed:
         return config.mixedOperations * config.iterations;
+      case BenchmarkScenarioType.full:
+        // Sum of all sub-scenario operation counts (iterations is fixed to 1)
+        return (config.openRepeatCount * 2) +
+            (config.recordCount * 4) +
+            config.mixedOperations;
     }
   }
 

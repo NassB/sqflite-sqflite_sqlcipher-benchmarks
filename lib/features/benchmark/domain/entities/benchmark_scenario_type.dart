@@ -6,6 +6,7 @@ enum BenchmarkScenarioType {
   delete,
   mixed,
   repeatedOpenClose,
+  full,
 }
 
 extension BenchmarkScenarioTypeX on BenchmarkScenarioType {
@@ -25,6 +26,14 @@ extension BenchmarkScenarioTypeX on BenchmarkScenarioType {
         return 'Mixed workload';
       case BenchmarkScenarioType.repeatedOpenClose:
         return 'Repeated open/close';
+      case BenchmarkScenarioType.full:
+        return 'Full benchmark';
     }
   }
+
+  /// Fixed iterations used when this scenario is [full].
+  static const int fullIterations = 1;
+
+  /// Fixed record count used when this scenario is [full].
+  static const int fullRecordCount = 500;
 }
