@@ -49,11 +49,11 @@ class StatsCalculator {
 
   String formatDeltaMessage({required double delta, required String baseline}) {
     final sign = delta >= 0 ? '+' : '';
-    if (delta > 1) return '$sign${delta.toStringAsFixed(1)}% plus lent que $baseline';
+    if (delta > 1) return '$sign${delta.toStringAsFixed(1)}% slower than $baseline';
     if (delta < -1) {
-      return '${delta.toStringAsFixed(1)}% plus rapide';
+      return '${delta.toStringAsFixed(1)}% faster';
     }
-    return '$sign${delta.toStringAsFixed(1)}% proche de $baseline';
+    return '$sign${delta.toStringAsFixed(1)}% similar to $baseline';
   }
 
   int percentileIndex(int size, double pct) {

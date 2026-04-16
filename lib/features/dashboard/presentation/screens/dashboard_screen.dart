@@ -21,7 +21,7 @@ class DashboardScreen extends ConsumerWidget {
       child: history.when(
         data: (runs) {
           if (runs.isEmpty) {
-            return const Center(child: Text('Aucun benchmark enregistré.'));
+            return const Center(child: Text('No benchmarks recorded.'));
           }
 
           final latestSqflite = runs.firstWhere(
@@ -42,7 +42,7 @@ class DashboardScreen extends ConsumerWidget {
             children: [
               Card(
                 child: ListTile(
-                  title: const Text('Dernier run'),
+                  title: const Text('Latest run'),
                   subtitle: Text(DateFormat('yyyy-MM-dd HH:mm:ss').format(runs.first.timestamp)),
                   trailing: Text(runs.first.config.scenario.label),
                 ),
@@ -76,13 +76,13 @@ class DashboardScreen extends ConsumerWidget {
               FilledButton.icon(
                 onPressed: () => context.go('/run'),
                 icon: const Icon(Icons.play_arrow),
-                label: const Text('Lancer un benchmark'),
+                label: const Text('Run benchmark'),
               ),
             ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
+        error: (e, _) => Center(child: Text('Error: $e')),
       ),
     );
   }

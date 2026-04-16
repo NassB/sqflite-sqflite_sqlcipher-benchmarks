@@ -23,14 +23,14 @@ class AppNavigationScaffold extends StatelessWidget {
           if (kDebugMode)
             const Padding(
               padding: EdgeInsets.only(right: 12),
-              child: Center(child: Text('DEBUG: résultats non fiables')),
+              child: Center(child: Text('DEBUG: unreliable results')),
             ),
         ],
       ),
       body: Column(
         children: [
           const MaterialBanner(
-            content: Text('Utilisez profile/release pour des benchmarks crédibles.'),
+            content: Text('Use profile/release mode for reliable benchmarks.'),
             actions: [SizedBox.shrink()],
           ),
           Expanded(child: child),

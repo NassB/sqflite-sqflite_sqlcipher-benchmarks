@@ -18,7 +18,7 @@ class HistoryScreen extends ConsumerWidget {
       child: history.when(
         data: (runs) {
           if (runs.isEmpty) {
-            return const Center(child: Text('Historique vide.'));
+            return const Center(child: Text('No benchmark history.'));
           }
           return ListView.builder(
             itemCount: runs.length,
@@ -39,7 +39,7 @@ class HistoryScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
+        error: (e, _) => Center(child: Text('Error: $e')),
       ),
     );
   }
