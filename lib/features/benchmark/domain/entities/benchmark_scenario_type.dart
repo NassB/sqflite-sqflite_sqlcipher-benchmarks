@@ -32,8 +32,8 @@ extension BenchmarkScenarioTypeX on BenchmarkScenarioType {
   }
 
   /// Fixed iterations used when this scenario is [full].
-  static const int fullIterations = 1;
+  static const int fullIterations = 10;
 
   /// Fixed record count used when this scenario is [full].
-  static const int fullRecordCount = 500;
+  static const int fullRecordCount = 1000;
 }
