@@ -43,12 +43,18 @@ class BenchmarkController extends Notifier<BenchmarkRunState> {
   }
 
   void updateConfig(BenchmarkScenarioConfig config) {
-    state = state.copyWith(config: config, error: null);
+    state = state.copyWith(config: config, clearError: true);
   }
 
   Future<void> run() async {
     _cancelRequested = false;
-    state = state.copyWith(isRunning: true, isCancelled: false, logs: [], runs: [], error: null);
+    state = state.copyWith(
+      isRunning: true,
+      isCancelled: false,
+      logs: [],
+      runs: [],
+      clearError: true,
+    );
 
     try {
       final runs = await ref.read(benchmarkRunnerProvider).run(

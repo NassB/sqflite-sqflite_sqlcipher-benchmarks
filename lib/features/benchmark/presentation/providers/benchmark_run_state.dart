@@ -26,6 +26,7 @@ class BenchmarkRunState {
     List<BenchmarkRun>? runs,
     List<BenchmarkLogEntry>? logs,
     String? error,
+    bool clearError = false,
   }) {
     return BenchmarkRunState(
       config: config ?? this.config,
@@ -33,7 +34,7 @@ class BenchmarkRunState {
       isCancelled: isCancelled ?? this.isCancelled,
       runs: runs ?? this.runs,
       logs: logs ?? this.logs,
-      error: error,
+      error: clearError ? null : (error ?? this.error),
     );
   }
 }
