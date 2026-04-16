@@ -4,6 +4,9 @@ import 'package:sqflite_sqlcipher_benchmarks/core/services/export_service.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
 import 'package:sqflite_sqlcipher_benchmarks/shared/widgets/app_navigation_scaffold.dart';
 
+import '../../domain/entities/benchmark_engine.dart';
+import '../../domain/entities/benchmark_scenario_type.dart';
+
 class BenchmarkDetailScreen extends StatelessWidget {
   const BenchmarkDetailScreen({super.key, required this.run});
 

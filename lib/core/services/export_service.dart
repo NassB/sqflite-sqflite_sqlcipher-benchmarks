@@ -8,6 +8,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:sqflite_sqlcipher_benchmarks/core/constants/app_constants.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
 
+import '../../features/benchmark/domain/entities/benchmark_engine.dart';
+
 class ExportService {
   const ExportService();
 
@@ -59,9 +61,7 @@ class ExportService {
   }
 
   Future<void> shareFile(File file) async {
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)]),
-    );
+    await Share.shareXFiles([XFile(file.path)]);
   }
 
   Future<Directory> _exportDir() async {

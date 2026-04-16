@@ -7,6 +7,8 @@ import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/pro
 import 'package:sqflite_sqlcipher_benchmarks/features/history/presentation/providers/history_provider.dart';
 import 'package:sqflite_sqlcipher_benchmarks/shared/widgets/app_navigation_scaffold.dart';
 
+import '../../../benchmark/domain/entities/benchmark_scenario_type.dart';
+
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 

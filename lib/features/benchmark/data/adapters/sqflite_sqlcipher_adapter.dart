@@ -112,10 +112,10 @@ class SqfliteSqlcipherAdapter implements DatabaseAdapter {
 
   @override
   Future<void> executePragma(BenchmarkPragmaConfig pragmas) async {
-    await _database.execute('PRAGMA journal_mode=${pragmas.journalMode}');
-    await _database.execute('PRAGMA synchronous=${pragmas.synchronous}');
-    await _database.execute('PRAGMA temp_store=${pragmas.tempStore}');
-    await _database.execute('PRAGMA cache_size=${pragmas.cacheSize}');
-    await _database.execute('PRAGMA foreign_keys=${pragmas.foreignKeys ? 1 : 0}');
+    await _database.rawQuery('PRAGMA journal_mode=${pragmas.journalMode}');
+    await _database.rawQuery('PRAGMA synchronous=${pragmas.synchronous}');
+    await _database.rawQuery('PRAGMA temp_store=${pragmas.tempStore}');
+    await _database.rawQuery('PRAGMA cache_size=${pragmas.cacheSize}');
+    await _database.rawQuery('PRAGMA foreign_keys=${pragmas.foreignKeys ? 1 : 0}');
   }
 }

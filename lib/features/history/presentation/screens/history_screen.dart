@@ -5,6 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/history/presentation/providers/history_provider.dart';
 import 'package:sqflite_sqlcipher_benchmarks/shared/widgets/app_navigation_scaffold.dart';
 
+import '../../../benchmark/domain/entities/benchmark_engine.dart';
+import '../../../benchmark/domain/entities/benchmark_scenario_type.dart';
+
 class HistoryScreen extends ConsumerWidget {
   const HistoryScreen({super.key});
 
