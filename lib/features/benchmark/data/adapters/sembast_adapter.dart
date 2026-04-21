@@ -84,14 +84,15 @@ class SembastAdapter implements DatabaseAdapter {
     var count = 0;
     final now = DateTime.now().millisecondsSinceEpoch;
     await _database.transaction((txn) async {
-      final records = await _store.find(txn);
+      final records = await _store.find(
+        txn,
+        finder: Finder(filter: Filter.lessThanOrEquals(Field.key, maxId)),
+      );
       for (final record in records) {
-        if (record.key > maxId) continue;
-        await _store.record(record.key).update(txn, <String, Object?>{
-          ...record.value,
-          'status': status,
-          'updated_at': now,
-        });
+        final next = Map<String, Object?>.from(record.value);
+        next['status'] = status;
+        next['updated_at'] = now;
+        await _store.record(record.key).put(txn, next);
         count++;
       }
     });

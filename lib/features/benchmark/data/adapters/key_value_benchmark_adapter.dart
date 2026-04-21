@@ -90,7 +90,11 @@ abstract class KeyValueBenchmarkAdapter implements DatabaseAdapter {
   @override
   Future<void> insertManyBatch(List<Map<String, Object?>> values) async {
     for (final row in values) {
-      await insertOne(row);
+      final id = _nextId++;
+      _rows[id] = <String, Object?>{
+        'id': id,
+        ...row,
+      };
     }
   }
 

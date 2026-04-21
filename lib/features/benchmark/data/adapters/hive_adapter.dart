@@ -89,19 +89,19 @@ class HiveAdapter implements DatabaseAdapter {
   Future<int> updateMany({required int maxId, required int status}) async {
     var count = 0;
     final now = DateTime.now().millisecondsSinceEpoch;
+    final updates = <int, Map<String, Object?>>{};
     for (final key in _database.keys.whereType<int>()) {
       if (key > maxId) continue;
       final row = _database.get(key);
       if (row == null) continue;
-      await _database.put(
-        key,
-        <String, Object?>{
-          ...Map<String, Object?>.from(row),
-          'status': status,
-          'updated_at': now,
-        },
-      );
+      final next = Map<String, Object?>.from(row);
+      next['status'] = status;
+      next['updated_at'] = now;
+      updates[key] = next;
       count++;
+    }
+    if (updates.isNotEmpty) {
+      await _database.putAll(updates);
     }
     return count;
   }
