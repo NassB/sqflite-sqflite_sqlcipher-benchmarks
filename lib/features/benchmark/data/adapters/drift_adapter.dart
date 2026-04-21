@@ -7,6 +7,12 @@ import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 class DriftAdapter implements DatabaseAdapter {
+  static const _insertSql = '''
+      INSERT INTO $benchTable
+      (ext_id, category, title, description, status, score, created_at, updated_at, payload)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ''';
+
   _DriftExecutor? _db;
 
   @override
@@ -57,22 +63,8 @@ class DriftAdapter implements DatabaseAdapter {
   @override
   Future<int> insertOne(Map<String, Object?> values) async {
     await _database.customStatement(
-      '''
-      INSERT INTO $benchTable
-      (ext_id, category, title, description, status, score, created_at, updated_at, payload)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      ''',
-      <Object?>[
-        values['ext_id'],
-        values['category'],
-        values['title'],
-        values['description'],
-        values['status'],
-        values['score'],
-        values['created_at'],
-        values['updated_at'],
-        values['payload'],
-      ],
+      _insertSql,
+      _insertArgs(values),
     );
     final rows = await _database.customSelect('SELECT last_insert_rowid() AS id').get();
     return (rows.first.data['id'] as num).toInt();
@@ -80,8 +72,15 @@ class DriftAdapter implements DatabaseAdapter {
 
   @override
   Future<void> insertManyBatch(List<Map<String, Object?>> values) async {
-    for (final row in values) {
-      await insertOne(row);
+    await _database.customStatement('BEGIN TRANSACTION');
+    try {
+      for (final row in values) {
+        await _database.customStatement(_insertSql, _insertArgs(row));
+      }
+      await _database.customStatement('COMMIT');
+    } catch (_) {
+      await _database.customStatement('ROLLBACK');
+      rethrow;
     }
   }
 
@@ -167,6 +166,18 @@ class DriftAdapter implements DatabaseAdapter {
     await _database.customStatement('PRAGMA cache_size=${pragmas.cacheSize}');
     await _database.customStatement('PRAGMA foreign_keys=${pragmas.foreignKeys ? 1 : 0}');
   }
+
+  List<Object?> _insertArgs(Map<String, Object?> values) => <Object?>[
+        values['ext_id'],
+        values['category'],
+        values['title'],
+        values['description'],
+        values['status'],
+        values['score'],
+        values['created_at'],
+        values['updated_at'],
+        values['payload'],
+      ];
 }
 
 class _DriftExecutor extends DatabaseConnectionUser {

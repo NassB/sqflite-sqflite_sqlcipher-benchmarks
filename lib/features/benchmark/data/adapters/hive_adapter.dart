@@ -53,9 +53,12 @@ class HiveAdapter implements DatabaseAdapter {
 
   @override
   Future<void> insertManyBatch(List<Map<String, Object?>> values) async {
+    final entries = <int, Map<String, Object?>>{};
     for (final row in values) {
-      await insertOne(row);
+      final id = _nextId++;
+      entries[id] = <String, Object?>{'id': id, ...row};
     }
+    await _database.putAll(entries);
   }
 
   @override
