@@ -38,14 +38,19 @@ abstract class KeyValueBenchmarkAdapter implements DatabaseAdapter {
       return;
     }
 
-    final decoded = jsonDecode(raw) as Map<String, dynamic>;
-    _nextId = (decoded['nextId'] as num?)?.toInt() ?? 1;
-    final rows = (decoded['rows'] as List<dynamic>? ?? const <dynamic>[])
-        .cast<Map<String, dynamic>>();
-    for (final row in rows) {
-      final id = (row['id'] as num?)?.toInt();
-      if (id == null) continue;
-      _rows[id] = Map<String, Object?>.from(row);
+    try {
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      _nextId = (decoded['nextId'] as num?)?.toInt() ?? 1;
+      final rows = (decoded['rows'] as List<dynamic>? ?? const <dynamic>[])
+          .cast<Map<String, dynamic>>();
+      for (final row in rows) {
+        final id = (row['id'] as num?)?.toInt();
+        if (id == null) continue;
+        _rows[id] = Map<String, Object?>.from(row);
+      }
+    } catch (_) {
+      _rows.clear();
+      _nextId = 1;
     }
     await executePragma(pragmas);
   }

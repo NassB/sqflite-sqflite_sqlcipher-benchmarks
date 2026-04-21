@@ -4,6 +4,8 @@ import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 class HiveAdapter implements DatabaseAdapter {
+  static bool _isHiveInitialized = false;
+
   Box<Map>? _box;
   int _nextId = 1;
 
@@ -14,13 +16,19 @@ class HiveAdapter implements DatabaseAdapter {
 
   String _boxName(String dbPath) => '${p.basenameWithoutExtension(dbPath)}_$engineName';
 
+  void _ensureHiveInitialized(String dbPath) {
+    if (_isHiveInitialized) return;
+    Hive.init(p.dirname(dbPath));
+    _isHiveInitialized = true;
+  }
+
   @override
   Future<void> open({
     required String dbPath,
     String? password,
     BenchmarkPragmaConfig pragmas = const BenchmarkPragmaConfig(),
   }) async {
-    Hive.init(p.dirname(dbPath));
+    _ensureHiveInitialized(dbPath);
     _box = await Hive.openBox<Map>(_boxName(dbPath));
     final ids = _database.keys.whereType<int>();
     final maxId = ids.fold<int>(0, (max, id) => id > max ? id : max);
@@ -36,7 +44,7 @@ class HiveAdapter implements DatabaseAdapter {
 
   @override
   Future<void> deleteDatabaseFile(String dbPath) async {
-    Hive.init(p.dirname(dbPath));
+    _ensureHiveInitialized(dbPath);
     await Hive.deleteBoxFromDisk(_boxName(dbPath));
     _nextId = 1;
   }
