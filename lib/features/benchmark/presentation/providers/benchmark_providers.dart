@@ -34,7 +34,7 @@ class BenchmarkController extends Notifier<BenchmarkRunState> {
     return BenchmarkRunState(
       config: BenchmarkScenarioConfig(
         scenario: BenchmarkScenarioType.bulkInsert,
-        engines: const [BenchmarkEngine.sqflite, BenchmarkEngine.sqfliteSqlcipher],
+        engines: BenchmarkEngine.values,
         sqlcipherPassword: settings.sqlcipherPassword,
         seed: settings.seed,
         pragmas: settings.pragmas,

@@ -20,6 +20,15 @@ dependencies:
   share_plus: ^10.1.4
   sqflite: ^2.3.3+1
   sqflite_sqlcipher: ^3.2.0
+  drift: any
+  drift_flutter: any
+  hive: any
+  hive_generator: any
+  sembast: any
+  objectbox: any
+  objectbox_flutter_libs: any
+  isar_community: any
+  isar_community_flutter_libs: any
   fl_chart: ^0.69.0
   device_info_plus: ^10.1.2
   package_info_plus: ^8.0.2
@@ -30,6 +39,9 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   build_runner: ^2.4.11
+  drift_dev: any
+  objectbox_generator: any
+  isar_community_generator: any
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
   json_serializable: ^6.8.0
