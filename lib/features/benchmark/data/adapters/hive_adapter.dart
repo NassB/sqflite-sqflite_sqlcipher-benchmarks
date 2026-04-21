@@ -23,7 +23,7 @@ class HiveAdapter implements DatabaseAdapter {
     Hive.init(p.dirname(dbPath));
     _box = await Hive.openBox<Map>(_boxName(dbPath));
     final ids = _database.keys.whereType<int>();
-    final maxId = ids.isEmpty ? 0 : ids.reduce((a, b) => a > b ? a : b);
+    final maxId = ids.fold<int>(0, (max, id) => id > max ? id : max);
     _nextId = maxId + 1;
     await executePragma(pragmas);
   }

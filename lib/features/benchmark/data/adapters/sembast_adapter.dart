@@ -22,7 +22,7 @@ class SembastAdapter implements DatabaseAdapter {
   }) async {
     _db = await databaseFactoryIo.openDatabase(dbPath);
     final keys = await _store.findKeys(_database);
-    final maxId = keys.isEmpty ? 0 : keys.reduce((a, b) => a > b ? a : b);
+    final maxId = keys.fold<int>(0, (max, id) => id > max ? id : max);
     _nextId = maxId + 1;
     await executePragma(pragmas);
   }
