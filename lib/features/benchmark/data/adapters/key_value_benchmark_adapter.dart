@@ -5,6 +5,11 @@ import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 abstract class KeyValueBenchmarkAdapter implements DatabaseAdapter {
+  static const _countQueryPrefix = 'SELECT COUNT(*)';
+  static const _categoryQueryPrefix = 'SELECT * FROM BENCH_ITEMS WHERE CATEGORY = ?';
+  static const _latestQueryPrefix = 'SELECT * FROM BENCH_ITEMS ORDER BY CREATED_AT DESC LIMIT ?';
+
+  /// In-memory benchmark row store loaded from disk on open and flushed on close.
   final Map<int, Map<String, Object?>> _rows = <int, Map<String, Object?>>{};
   int _nextId = 1;
   String? _storagePath;
@@ -149,13 +154,13 @@ abstract class KeyValueBenchmarkAdapter implements DatabaseAdapter {
   @override
   Future<List<Map<String, Object?>>> rawQuery(String query, [List<Object?>? args]) async {
     final normalized = query.trim().toUpperCase();
-    if (normalized.startsWith('SELECT COUNT(*)')) {
+    if (normalized.startsWith(_countQueryPrefix)) {
       return <Map<String, Object?>>[
         <String, Object?>{'c': _rows.length},
       ];
     }
 
-    if (normalized.startsWith('SELECT * FROM BENCH_ITEMS WHERE CATEGORY = ?')) {
+    if (normalized.startsWith(_categoryQueryPrefix)) {
       final category = args != null && args.isNotEmpty ? args.first as String? : null;
       final limit = args != null && args.length > 1 ? (args[1] as num).toInt() : _rows.length;
       final filtered = _rows.values
@@ -165,7 +170,7 @@ abstract class KeyValueBenchmarkAdapter implements DatabaseAdapter {
       return filtered;
     }
 
-    if (normalized.startsWith('SELECT * FROM BENCH_ITEMS ORDER BY CREATED_AT DESC LIMIT ?')) {
+    if (normalized.startsWith(_latestQueryPrefix)) {
       final limit = args != null && args.isNotEmpty ? (args.first as num).toInt() : _rows.length;
       final sorted = _rows.values.toList()
         ..sort(
