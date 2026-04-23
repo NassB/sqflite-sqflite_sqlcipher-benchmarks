@@ -5,6 +5,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_sqlcipher_benchmarks/core/constants/app_constants.dart';
 import 'package:sqflite_sqlcipher_benchmarks/core/services/device_metadata_service.dart';
 import 'package:sqflite_sqlcipher_benchmarks/core/services/stats_calculator.dart';
+import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/drift_adapter.dart';
+import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/hive_adapter.dart';
+import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/isar_community_adapter.dart';
+import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/objectbox_adapter.dart';
+import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/sembast_adapter.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/sqflite_adapter.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/sqflite_sqlcipher_adapter.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/services/benchmark_fake_data_generator.dart';
@@ -289,6 +294,16 @@ class BenchmarkRunner {
         return SqfliteAdapter();
       case BenchmarkEngine.sqfliteSqlcipher:
         return SqfliteSqlcipherAdapter();
+      case BenchmarkEngine.drift:
+        return DriftAdapter();
+      case BenchmarkEngine.hive:
+        return HiveAdapter();
+      case BenchmarkEngine.sembast:
+        return SembastAdapter();
+      case BenchmarkEngine.objectbox:
+        return ObjectboxAdapter();
+      case BenchmarkEngine.isarCommunity:
+        return IsarCommunityAdapter();
     }
   }
 

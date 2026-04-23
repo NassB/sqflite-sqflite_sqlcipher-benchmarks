@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/providers/benchmark_providers.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/history/presentation/providers/history_provider.dart';
 import 'package:sqflite_sqlcipher_benchmarks/shared/widgets/app_navigation_scaffold.dart';
@@ -26,18 +27,18 @@ class DashboardScreen extends ConsumerWidget {
             return const Center(child: Text('No benchmarks recorded.'));
           }
 
-          final latestSqflite = runs.firstWhere(
-            (r) => r.engine == BenchmarkEngine.sqflite,
-            orElse: () => runs.first,
-          );
-          final latestCipher = runs.firstWhere(
-            (r) => r.engine == BenchmarkEngine.sqfliteSqlcipher,
-            orElse: () => runs.first,
-          );
-          final delta = stats.deltaPercent(
-            reference: latestSqflite.summary.meanMs,
-            candidate: latestCipher.summary.meanMs,
-          );
+          final latestByEngine = <BenchmarkEngine, BenchmarkRun>{};
+          for (final run in runs) {
+            latestByEngine.putIfAbsent(run.engine, () => run);
+          }
+          final latestSqflite = latestByEngine[BenchmarkEngine.sqflite];
+          final latestCipher = latestByEngine[BenchmarkEngine.sqfliteSqlcipher];
+          final delta = latestSqflite != null && latestCipher != null
+              ? stats.deltaPercent(
+                  reference: latestSqflite.summary.meanMs,
+                  candidate: latestCipher.summary.meanMs,
+                )
+              : null;
 
           return ListView(
             padding: const EdgeInsets.all(16),
@@ -50,30 +51,30 @@ class DashboardScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _MetricCard(
-                      title: 'sqflite',
-                      value: '${latestSqflite.summary.meanMs.toStringAsFixed(2)} ms',
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _MetricCard(
-                      title: 'sqflite_sqlcipher',
-                      value: '${latestCipher.summary.meanMs.toStringAsFixed(2)} ms',
-                    ),
-                  ),
-                ],
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: latestByEngine.entries
+                    .map(
+                      (entry) => SizedBox(
+                        width: 220,
+                        child: _MetricCard(
+                          title: entry.key.label,
+                          value: '${entry.value.summary.meanMs.toStringAsFixed(2)} ms',
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
-              const SizedBox(height: 12),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(stats.formatDeltaMessage(delta: delta, baseline: 'sqflite')),
+              if (delta != null) ...[
+                const SizedBox(height: 12),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(stats.formatDeltaMessage(delta: delta, baseline: 'sqflite')),
+                  ),
                 ),
-              ),
+              ],
               const SizedBox(height: 12),
               FilledButton.icon(
                 onPressed: () => context.go('/run'),
