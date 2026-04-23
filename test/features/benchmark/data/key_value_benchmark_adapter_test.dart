@@ -23,9 +23,9 @@ void main() {
   setUp(() async {
     adapter = ObjectboxAdapter();
     // Open against a path that will not exist — the adapter is fully in-memory
-    // until close() persists to disk.  Passing '/non_existent/...' means no
+    // until close() persists to disk.  Passing '/nonexistent/...' means no
     // file will be found and no file I/O occurs during the test.
-    await adapter.open(dbPath: '/non_existent/bench_kv_test');
+    await adapter.open(dbPath: '/nonexistent/bench_kv_test');
   });
 
   tearDown(() {
