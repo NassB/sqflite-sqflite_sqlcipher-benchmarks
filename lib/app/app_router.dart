@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/screens/benchmark_detail_screen.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/screens/run_benchmark_screen.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/dashboard/presentation/screens/dashboard_screen.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/history/presentation/screens/history_screen.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/settings/presentation/screens/settings_screen.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
+import 'package:database_benchmarks/features/benchmark/presentation/screens/benchmark_detail_screen.dart';
+import 'package:database_benchmarks/features/benchmark/presentation/screens/run_benchmark_screen.dart';
+import 'package:database_benchmarks/features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'package:database_benchmarks/features/history/presentation/screens/history_screen.dart';
+import 'package:database_benchmarks/features/settings/presentation/screens/settings_screen.dart';
 
 GoRouter buildRouter() {
   return GoRouter(

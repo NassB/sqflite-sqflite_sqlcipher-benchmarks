@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/services/stats_calculator.dart';
+import 'package:database_benchmarks/core/services/stats_calculator.dart';
 
 void main() {
   const calculator = StatsCalculator();

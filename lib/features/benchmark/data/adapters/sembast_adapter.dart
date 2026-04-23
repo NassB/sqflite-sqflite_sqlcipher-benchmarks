@@ -1,8 +1,8 @@
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/benchmark_schema.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/benchmark_schema.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 class SembastAdapter implements DatabaseAdapter {
   static final _store = intMapStoreFactory.store(benchTable);

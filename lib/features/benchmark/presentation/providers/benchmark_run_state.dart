@@ -1,6 +1,6 @@
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_log_entry.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_log_entry.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
 
 class BenchmarkRunState {
   const BenchmarkRunState({

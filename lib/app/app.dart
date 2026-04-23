@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite_sqlcipher_benchmarks/app/app_router.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/settings/presentation/providers/settings_provider.dart';
-import 'package:sqflite_sqlcipher_benchmarks/shared/theme/app_theme.dart';
+import 'package:database_benchmarks/app/app_router.dart';
+import 'package:database_benchmarks/features/settings/presentation/providers/settings_provider.dart';
+import 'package:database_benchmarks/shared/theme/app_theme.dart';
 
 class BenchmarkApp extends ConsumerWidget {
   const BenchmarkApp({super.key});

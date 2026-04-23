@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/providers/benchmark_providers.dart';
-import 'package:sqflite_sqlcipher_benchmarks/shared/widgets/app_navigation_scaffold.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
+import 'package:database_benchmarks/features/benchmark/presentation/providers/benchmark_providers.dart';
+import 'package:database_benchmarks/shared/widgets/app_navigation_scaffold.dart';
 
 class RunBenchmarkScreen extends ConsumerStatefulWidget {
   const RunBenchmarkScreen({super.key});

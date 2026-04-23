@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 abstract class KeyValueBenchmarkAdapter implements DatabaseAdapter {
   static const _countOperationPrefix = 'SELECT COUNT(*)';

@@ -1,5 +1,5 @@
-name: sqflite_sqlcipher_benchmarks
-description: Benchmark Flutter app comparing sqflite and sqflite_sqlcipher.
+name: database_benchmarks
+description: Benchmark Flutter app comparing multiple local database packages.
 publish_to: none
 version: 1.0.0+1
 

@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/benchmark_schema.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/benchmark_schema.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 class DriftAdapter implements DatabaseAdapter {
   static const _insertSql = '''
