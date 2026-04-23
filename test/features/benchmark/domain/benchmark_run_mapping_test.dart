@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_sample.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_summary.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/device_metadata.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_sample.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_summary.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/device_metadata.dart';
 
 BenchmarkRun _makeRun(BenchmarkEngine engine) => BenchmarkRun(
       id: 'run_${engine.name}',

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/history/data/history_repository.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
+import 'package:database_benchmarks/features/history/data/history_repository.dart';
 
 final historyRepositoryProvider = Provider<HistoryRepository>((ref) {
   return const HistoryRepository();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/screens/run_benchmark_screen.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:database_benchmarks/features/benchmark/presentation/screens/run_benchmark_screen.dart';
 
 void main() {
   testWidgets('shows benchmark config form fields', (tester) async {

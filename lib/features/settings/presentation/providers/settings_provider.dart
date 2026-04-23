@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
 
 class AppSettings {
   const AppSettings({

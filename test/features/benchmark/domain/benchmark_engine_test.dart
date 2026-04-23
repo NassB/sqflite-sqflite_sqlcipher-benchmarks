@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
 
 void main() {
   group('BenchmarkEngine.label', () {

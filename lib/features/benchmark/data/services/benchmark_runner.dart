@@ -2,25 +2,25 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/constants/app_constants.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/services/device_metadata_service.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/services/stats_calculator.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/drift_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/hive_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/isar_community_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/objectbox_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/sembast_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/sqflite_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/adapters/sqflite_sqlcipher_adapter.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/services/benchmark_fake_data_generator.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_log_entry.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_sample.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_summary.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
+import 'package:database_benchmarks/core/constants/app_constants.dart';
+import 'package:database_benchmarks/core/services/device_metadata_service.dart';
+import 'package:database_benchmarks/core/services/stats_calculator.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/drift_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/hive_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/isar_community_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/objectbox_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/sembast_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/sqflite_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/adapters/sqflite_sqlcipher_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/data/services/benchmark_fake_data_generator.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_log_entry.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_sample.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_summary.dart';
+import 'package:database_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 class BenchmarkRunner {
   BenchmarkRunner({

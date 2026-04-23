@@ -1,6 +1,6 @@
-# sqflite vs sqflite_sqlcipher — Benchmarks
+# Database Benchmarks
 
-A Flutter benchmarking app for **Android and iOS** that measures and compares the performance of [`sqflite`](https://pub.dev/packages/sqflite) and [`sqflite_sqlcipher`](https://pub.dev/packages/sqflite_sqlcipher) under identical, reproducible conditions.
+A Flutter benchmarking app for **Android and iOS** that measures and compares multiple database packages under identical, reproducible conditions.
 
 ---
 
@@ -14,7 +14,7 @@ A Flutter benchmarking app for **Android and iOS** that measures and compares th
 - [Configuration Reference](#configuration-reference)
 - [SQLite PRAGMA Defaults](#sqlite-pragma-defaults)
 - [Statistics & Metrics](#statistics--metrics)
-- [sqflite vs sqflite_sqlcipher — What is Being Measured](#sqflite-vs-sqflite_sqlcipher--what-is-being-measured)
+- [Database Engines Currently Benchmarked](#database-engines-currently-benchmarked)
 - [Methodology & Measurement Guarantees](#methodology--measurement-guarantees)
 - [Methodological Limitations](#methodological-limitations)
 - [Export Formats](#export-formats)
@@ -27,9 +27,9 @@ A Flutter benchmarking app for **Android and iOS** that measures and compares th
 
 ## Purpose
 
-The app answers one question: **how much overhead does transparent AES-256 encryption add to common SQLite operations?**
+The app answers one question: **how do different Flutter database engines compare on common CRUD workloads?**
 
-It does so by running the same database workloads against both engines — same schema, same data volume, same queries, same PRAGMA configuration — and surfacing side-by-side statistics you can export and analyse.
+It runs equivalent workloads against selected engines with the same scenario settings (iterations, record counts, warmup/reset behavior, and metrics collection), then surfaces side-by-side statistics you can export and analyse.
 
 ---
 
@@ -63,7 +63,7 @@ lib/
 ├── features/
 │   ├── benchmark/
 │   │   ├── data/
-│   │   │   ├── adapters/       # SqfliteAdapter, SqfliteSqlcipherAdapter, shared schema
+│   │   │   ├── adapters/       # Sqflite/SQLCipher/Drift/Hive/Sembast/ObjectBox/Isar adapters
 │   │   │   └── services/       # BenchmarkRunner, BenchmarkFakeDataGenerator
 │   │   ├── domain/
 │   │   │   ├── entities/       # BenchmarkRun, BenchmarkSummary, BenchmarkScenarioConfig, …
@@ -193,23 +193,23 @@ After each scenario run the following statistics are computed by `StatsCalculato
 - Compare **median + p95** first; they are more representative than the mean when a few iterations are outliers.
 - Use **ops/s** to compare raw throughput across different record counts.
 - Use **DB/WAL size** to understand the storage footprint of each engine and the effect of your PRAGMA choices.
-- The dashboard shows the **mean delta %** between the last sqflite and sqflite_sqlcipher runs.
+- The dashboard shows the **mean delta %** between comparable runs.
 
 ---
 
-## sqflite vs sqflite_sqlcipher — What is Being Measured
+## Database Engines Currently Benchmarked
 
-`sqflite_sqlcipher` wraps SQLCipher, which adds transparent **AES-256-CBC** encryption at the page level. The expected overhead varies by scenario:
+The app currently benchmarks the following engines:
 
-| Scenario class | Expected overhead |
-|---------------|------------------|
-| First `open` | 2–10× slower — PBKDF2 key derivation (thousands of hash iterations by default). |
-| Subsequent `open` | Still measurably slower — page MAC verification even with cached key. |
-| Write-heavy (insert, update, delete) | 15–50 % slower — every dirty page is encrypted before hitting disk. WAL frames are individually encrypted. |
-| Read-heavy | 5–20 % slower — every cache miss requires decrypting a page. |
-| Mixed | Proportional to the read/write split. |
+- `sqflite`
+- `sqflite_sqlcipher`
+- `drift`
+- `hive`
+- `sembast`
+- `objectbox`
+- `isar_community`
 
-The schema, queries, indices, data volumes, and PRAGMA settings are kept **strictly identical** between the two engines to isolate encryption as the only variable.
+Scenarios are executed through a common adapter contract so each engine is measured with the same benchmark flow and reporting model.
 
 ---
 
@@ -217,7 +217,7 @@ The schema, queries, indices, data volumes, and PRAGMA settings are kept **stric
 
 - **Timing**: measured with Dart's `Stopwatch` at microsecond resolution, converted to milliseconds. The clock starts immediately after the initial `open()` call and stops before the final `close()`.
 - **Warmup**: if enabled, one full un-timed iteration is executed before the measured iterations. This amortises JIT compilation, OS page cache cold starts, and Flutter engine warm-up.
-- **Isolation**: each engine gets its own database file (`bench_db_sqflite.db`, `bench_db_sqfliteSqlcipher.db`). If reset is enabled the file is deleted before the run.
+- **Isolation**: each engine gets its own storage/database namespace (for SQLite-based engines, dedicated files such as `bench_db_<engine>.db`). If reset is enabled, storage is recreated before the run.
 - **Fake data**: generated deterministically from a configurable seed via `BenchmarkFakeDataGenerator`. The same seed always produces the same rows.
 - **Cancellation**: any run can be cancelled mid-flight; partial results are discarded.
 
@@ -231,7 +231,7 @@ The schema, queries, indices, data volumes, and PRAGMA settings are kept **stric
 - Results vary with device temperature, battery level, system I/O load, and background processes. Take multiple samples and average.
 - **Avoid the emulator** — emulated storage and the absence of hardware AES acceleration make results incomparable to physical devices.
 - The warmup iteration only partially eliminates cold-page-cache effects. On devices with slow flash storage, the first measured iteration may still be an outlier even with warmup enabled.
-- `sqflite_sqlcipher`'s PBKDF2 iteration count is configurable at the library level (not exposed here). Results reflect the library's compiled defaults.
+- SQLCipher-specific settings (such as PBKDF2 iteration count) are configurable at the library level and can affect `sqflite_sqlcipher` results.
 
 ---
 
@@ -322,8 +322,13 @@ flutter test test/
 |---------|---------|------|
 | `flutter_riverpod` | ^2.5.1 | State management |
 | `go_router` | ^14.2.3 | Declarative navigation |
-| `sqflite` | ^2.3.3 | Unencrypted SQLite engine |
+| `sqflite` | ^2.3.3+1 | SQLite engine |
 | `sqflite_sqlcipher` | ^3.2.0 | AES-256 encrypted SQLite engine |
+| `drift` / `drift_flutter` | ^2.28.2 / ^0.2.5 | Typed SQLite layer |
+| `hive` | ^2.2.3 | Lightweight key-value store |
+| `sembast` | ^3.8.5+1 | NoSQL persistent store |
+| `objectbox` | ^4.3.0 | Object-oriented local database |
+| `isar_community` | ^3.1.0+1 | Local NoSQL database |
 | `fl_chart` | ^0.69.0 | Line and bar charts in the detail screen |
 | `csv` | ^6.0.0 | CSV serialisation for exports |
 | `share_plus` | ^10.1.4 | Native share sheet for file export |
@@ -339,9 +344,9 @@ flutter test test/
 
 ## Extension Ideas
 
-- **Add more engines** — implement `DatabaseAdapter` for `drift`, `sqlite3` (FFI), or `isar` without touching any existing code.
+- **Add more engines** — implement `DatabaseAdapter` for additional backends (for example `sqlite3` FFI or Realm) without touching existing benchmark scenarios.
 - **Multi-run comparison** — render two runs side-by-side in the detail screen (grouped bar chart).
 - **Persist settings** — write `settingsProvider` state to shared preferences so choices survive app restarts.
 - **Global CSV export** — export the entire history across all scenarios in one file.
 - **Scenario presets** — save named configurations for quick recall.
-- **Hardware AES detection** — surface whether the device has hardware-accelerated AES, which significantly affects `sqflite_sqlcipher` results.
+- **Hardware AES detection** — surface whether the device has hardware-accelerated AES, which can significantly affect encrypted-engine results.

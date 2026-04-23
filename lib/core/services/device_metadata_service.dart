@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/utils/build_mode.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/device_metadata.dart';
+import 'package:database_benchmarks/core/utils/build_mode.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/device_metadata.dart';
 
 class DeviceMetadataService {
   const DeviceMetadataService();

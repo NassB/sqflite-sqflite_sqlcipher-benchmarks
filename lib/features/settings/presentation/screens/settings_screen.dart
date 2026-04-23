@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/history/presentation/providers/history_provider.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/settings/presentation/providers/settings_provider.dart';
-import 'package:sqflite_sqlcipher_benchmarks/shared/widgets/app_navigation_scaffold.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
+import 'package:database_benchmarks/features/history/presentation/providers/history_provider.dart';
+import 'package:database_benchmarks/features/settings/presentation/providers/settings_provider.dart';
+import 'package:database_benchmarks/shared/widgets/app_navigation_scaffold.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});

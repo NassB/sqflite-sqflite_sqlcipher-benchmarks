@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_pragma_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/repositories/database_adapter.dart';
 
 class HiveAdapter implements DatabaseAdapter {
   static bool _isHiveInitialized = false;

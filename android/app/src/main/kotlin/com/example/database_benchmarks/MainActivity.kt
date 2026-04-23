@@ -1,4 +1,4 @@
-package com.example.sqflite_sqlcipher_benchmarks
+package com.example.database_benchmarks
 
 import io.flutter.embedding.android.FlutterActivity
 

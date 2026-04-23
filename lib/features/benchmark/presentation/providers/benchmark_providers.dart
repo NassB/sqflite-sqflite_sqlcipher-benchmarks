@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/services/device_metadata_service.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/services/stats_calculator.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/data/services/benchmark_runner.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_log_entry.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/presentation/providers/benchmark_run_state.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/history/presentation/providers/history_provider.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/settings/presentation/providers/settings_provider.dart';
+import 'package:database_benchmarks/core/services/device_metadata_service.dart';
+import 'package:database_benchmarks/core/services/stats_calculator.dart';
+import 'package:database_benchmarks/features/benchmark/data/services/benchmark_runner.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_engine.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_log_entry.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_config.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_scenario_type.dart';
+import 'package:database_benchmarks/features/benchmark/presentation/providers/benchmark_run_state.dart';
+import 'package:database_benchmarks/features/history/presentation/providers/history_provider.dart';
+import 'package:database_benchmarks/features/settings/presentation/providers/settings_provider.dart';
 
 final statsCalculatorProvider = Provider<StatsCalculator>((ref) => const StatsCalculator());
 

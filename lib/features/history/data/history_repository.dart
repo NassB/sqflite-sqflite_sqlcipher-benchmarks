@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite_sqlcipher_benchmarks/core/constants/app_constants.dart';
-import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
+import 'package:database_benchmarks/core/constants/app_constants.dart';
+import 'package:database_benchmarks/features/benchmark/domain/entities/benchmark_run.dart';
 
 class HistoryRepository {
   const HistoryRepository();

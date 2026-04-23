@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="sqflite_sqlcipher_benchmarks"
+        android:label="Database Benchmarks"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
