@@ -7,15 +7,13 @@ import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/benchmark_summary.dart';
 import 'package:sqflite_sqlcipher_benchmarks/features/benchmark/domain/entities/device_metadata.dart';
 
-void main() {
-  test('BenchmarkRun json mapping roundtrip', () {
-    final run = BenchmarkRun(
-      id: '1',
+BenchmarkRun _makeRun(BenchmarkEngine engine) => BenchmarkRun(
+      id: 'run_${engine.name}',
       timestamp: DateTime.parse('2024-01-01T00:00:00Z'),
-      engine: BenchmarkEngine.sqflite,
-      config: const BenchmarkScenarioConfig(
+      engine: engine,
+      config: BenchmarkScenarioConfig(
         scenario: BenchmarkScenarioType.bulkInsert,
-        engines: [BenchmarkEngine.sqflite],
+        engines: [engine],
       ),
       samples: const [BenchmarkSample(iteration: 1, elapsedMs: 10)],
       summary: const BenchmarkSummary(
@@ -39,9 +37,24 @@ void main() {
       success: true,
     );
 
-    final restored = BenchmarkRun.fromJson(run.toJson());
-    expect(restored.id, run.id);
-    expect(restored.engine, run.engine);
-    expect(restored.summary.p95Ms, 10);
+void main() {
+  group('BenchmarkRun json roundtrip', () {
+    for (final engine in BenchmarkEngine.values) {
+      test('roundtrip for engine ${engine.name}', () {
+        final run = _makeRun(engine);
+        final restored = BenchmarkRun.fromJson(run.toJson());
+        expect(restored.id, run.id);
+        expect(restored.engine, engine);
+        expect(restored.summary.p95Ms, 10);
+        expect(restored.config.engines, [engine]);
+      });
+    }
+  });
+
+  test('fromJson falls back to sqflite for unknown engine name', () {
+    final run = _makeRun(BenchmarkEngine.sqflite);
+    final json = run.toJson()..['engine'] = 'unknown_engine';
+    final restored = BenchmarkRun.fromJson(json);
+    expect(restored.engine, BenchmarkEngine.sqflite);
   });
 }
